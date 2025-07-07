@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'Detalles - ' + ${proyecto.nombreObra}">Detalles del Proyecto</title>
+
+  <!-- Estilos de Bootstrap (necesarios para esta vista) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Barra de navegación específica para esta vista -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand fw-bold" th:href="@{/}">
+      <i class="bi bi-building"></i> CartillasAceroWeb
+    </a>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/proyectos}">
+          <i class="bi bi-list-ul"></i> Lista de Proyectos
+        </a>
+      </li>
+    </ul>
+    <span class="navbar-text ms-4">
+            <i class="bi bi-mortarboard"></i> SENA - GA7-220501096-AA3-EV01
+        </span>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <!-- Encabezado de la página -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+      <h1 class="display-6">
+        <i class="bi bi-info-circle"></i> Detalles del Proyecto
+      </h1>
+      <p class="text-muted" th:text="${proyecto.nombreObra}">Nombre de la obra</p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a th:href="@{/proyectos}" class="btn btn-primary">
+        <i class="bi bi-arrow-left-circle"></i> Volver a la Lista
+      </a>
+    </div>
+  </div>
+
+  <!-- Tarjeta con los detalles del proyecto -->
+  <div class="card shadow-sm" th:object="${proyecto}">
+    <div class="card-header bg-primary text-white">
+      <h5 class="card-title mb-0" th:text="*{nombreObra}"></h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Columna 1: Datos del Proyecto -->
+        <div class="col-lg-6 mb-4">
+          <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-building"></i> Datos del Proyecto</h5>
+          <dl class="row">
+            <dt class="col-sm-4">ID de Proyecto:</dt>
+            <dd class="col-sm-8" th:text="*{id}"></dd>
+
+            <dt class="col-sm-4">Dirección:</dt>
+            <dd class="col-sm-8" th:text="*{direccionObra}"></dd>
+
+            <dt class="col-sm-4">Estado:</dt>
+            <dd class="col-sm-8">
+                  <span class="badge"
+                        th:classappend="${proyecto.estado == 'ACTIVO' ? 'bg-success' :
+                                         proyecto.estado == 'PAUSADO' ? 'bg-warning text-dark' :
+                                         proyecto.estado == 'FINALIZADO' ? 'bg-info' : 'bg-secondary'}"
+                        th:text="${proyecto.estado}">
+                  </span>
+            </dd>
+
+            <dt class="col-sm-4">Fecha de Creación:</dt>
+            <dd class="col-sm-8" th:text="${#temporals.format(fechaCreacion, 'dd MMMM yyyy, HH:mm')}"></dd>
+          </dl>
+        </div>
+
+        <!-- Columna 2: Datos del Cliente -->
+        <div class="col-lg-6 mb-4">
+          <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-person-badge"></i> Datos del Cliente</h5>
+          <dl class="row">
+            <dt class="col-sm-4">Nombre Cliente:</dt>
+            <dd class="col-sm-8" th:text="*{nombreCliente}"></dd>
+
+            <dt class="col-sm-4">NIT:</dt>
+            <dd class="col-sm-8"><code th:text="*{nitCliente}"></code></dd>
+
+            <dt class="col-sm-4">Email de Contacto:</dt>
+            <dd class="col-sm-8" th:text="*{emailContacto}"></dd>
+
+            <dt class="col-sm-4">Teléfono:</dt>
+            <dd class="col-sm-8" th:text="*{telefonoContacto}"></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted text-center">
+      <small>Información detallada del proyecto. Para modificar, use la opción "Editar" en la lista principal.</small>
+    </div>
+  </div>
+</div>
+
+<!-- Pie de página específico para esta vista -->
+<footer class="bg-dark text-white mt-5 py-4">
+  <div class="container text-center">
+    <p class="mb-0">
+      <i class="bi bi-mortarboard"></i>
+      SENA - Análisis y Desarrollo de Software |
+      <i class="bi bi-person"></i> Nelson Rodriguez |
+      <i class="bi bi-calendar"></i> 2025
+    </p>
+  </div>
+</footer>
+
+<!-- Scripts de Bootstrap (necesarios para esta vista) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
