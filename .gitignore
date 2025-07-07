@@ -1,0 +1,73 @@
+# ===================================================================
+# Archivos de Ayuda y Documentación (Recomendación: MANTENERLOS)
+# ===================================================================
+# HELP.md  <- Recomiendo quitar esta línea para versionar el archivo de ayuda.
+
+# ===================================================================
+# Build output & Package files
+# ===================================================================
+/target/
+/build/
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ===================================================================
+# Maven
+# ===================================================================
+# El JAR del wrapper se descarga, no se versiona.
+.mvn/wrapper/maven-wrapper.jar
+# Excepciones para no ignorar los wrappers en sub-módulos (tu regla original, es buena práctica)
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ===================================================================
+# Logs and Runtime Data
+# ===================================================================
+*.log
+logs/
+# Archivos de volcado de crash de la JVM
+hs_err_pid*
+
+# ===================================================================
+# IDE specific files
+# ===================================================================
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+/out/
+
+# Eclipse / Spring Tool Suite (STS)
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+.apt_generated
+.factorypath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ===================================================================
+# OS specific files
+# ===================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- =============================================================================== -->
+	<!-- INFORMACIÓN DEL PROYECTO ACADÉMICO                                             -->
+	<!-- =============================================================================== -->
+	<!--
+	     Proyecto:    CartillasAceroWeb - Migración a Spring Boot
+	     Evidencia:   GA7-220501096-AA3-EV01
+	     Programa:    Análisis y Desarrollo de Software - SENA
+	     Autor:       Nelson Rodriguez
+	     Descripción: Migración del módulo de Servlets/JSP a Spring Boot
+	     Fecha:       Julio 2025
+	-->
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.3</version> <!-- Aquí el cambio -->
+		<relativePath/>
+	</parent>
+
+
+	<groupId>com.sena</groupId>
+	<artifactId>GA7_AA3_EV01_springboot</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>GA7_AA3_EV01_springboot</name>
+	<description>Evidencia GA7-220501096-AA3-EV01: Migración del módulo de gestión de proyectos desde Servlets/JSP hacia Spring Boot con JPA/Hibernate y Thymeleaf</description>
+	<url/>
+
+	<!-- =============================================================================== -->
+	<!-- LICENCIAS Y DESARROLLADORES (Requerido por Spring Boot Parent)                 -->
+	<!-- =============================================================================== -->
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+
+	<!-- =============================================================================== -->
+	<!-- PROPIEDADES DEL PROYECTO                                                       -->
+	<!-- =============================================================================== -->
+	<properties>
+		<!--
+		     CAMBIO PRINCIPAL: Java 24 → Java 22
+		     Razón: Usar la versión instalada localmente (Java 22.0.1)
+		     Compatibilidad: 100% funcional con Spring Boot 3.5.3
+		-->
+		<java.version>22</java.version>
+	</properties>
+
+	<!-- =============================================================================== -->
+	<!-- DEPENDENCIAS DEL PROYECTO                                                      -->
+	<!-- =============================================================================== -->
+	<!--
+	     Dependencias generadas por Spring Initializr:
+	     - Spring Boot Starter Data JPA (para persistencia con Hibernate)
+	     - Spring Boot Starter Thymeleaf (para motor de plantillas)
+	     - Spring Boot Starter Web (para controladores MVC y Tomcat embebido)
+	     - Spring Boot DevTools (para hot reload durante desarrollo)
+	     - MySQL Connector/J (para conexión a base de datos MySQL)
+	     - Lombok (para reducir boilerplate code)
+	     - Spring Boot Starter Test (para testing unitario e integración)
+	-->
+	<dependencies>
+
+		<!--
+		     SPRING BOOT STARTER DATA JPA
+		     Proporciona:
+		     - Spring Data JPA (repositorios automáticos)
+		     - Hibernate ORM (implementación JPA)
+		     - HikariCP (pool de conexiones optimizado)
+		     - Transaction management automático
+
+		     Reemplaza: Todo el código JDBC manual del ProyectoDAO anterior
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!--
+		     SPRING BOOT STARTER THYMELEAF
+		     Proporciona:
+		     - Motor de plantillas Thymeleaf
+		     - Integración automática con Spring MVC
+		     - Sintaxis natural HTML5
+		     - Layout dialect para plantillas reutilizables
+
+		     Reemplaza: JSP + JSTL de la versión anterior
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!--
+		     SPRING BOOT STARTER WEB
+		     Proporciona:
+		     - Spring MVC para controladores web
+		     - Tomcat embebido (no necesita servidor externo)
+		     - Jackson para JSON serialization
+
+		     Reemplaza: jakarta.servlet-api, jakarta.servlet.jsp-api, Tomcat externo
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!--
+		     SPRING BOOT STARTER VALIDATION
+		     Proporciona:
+		     - Bean Validation (JSR-303/JSR-349/JSR-380)
+		     - Hibernate Validator
+		     - Validaciones automáticas en controladores (@Valid)
+		     - Anotaciones: @NotNull, @NotBlank, @Size, @Pattern, @Email, etc.
+
+		     NOTA: En Spring Boot 3.x esta dependencia es SEPARADA de starter-web
+		     SOLUCIONA: Cannot resolve symbol 'validation', 'NotNull', etc.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!--
+		     SPRING BOOT DEVTOOLS
+		     Proporciona:
+		     - Hot reload automático al cambiar código
+		     - Live reload en el navegador
+		     - Propiedades de desarrollo automáticas
+		     - Cache deshabilitado para plantillas
+
+		     BENEFICIO ACADÉMICO: Acelera el desarrollo y testing
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!--
+		     MYSQL CONNECTOR/J
+		     Driver JDBC para MySQL 8.0
+		     Compatible con XAMPP y MySQL local
+
+		     MANTIENE: La misma funcionalidad del proyecto anterior
+		     MEJORA: Pool de conexiones automático con HikariCP
+		-->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!--
+		     LOMBOK
+		     Proporciona:
+		     - @Data: Genera automáticamente getters, setters, toString, equals, hashCode
+		     - @Entity: Compatible con JPA
+		     - @Builder: Patrón builder automático
+		     - @Slf4j: Logger automático
+
+		     BENEFICIO ACADÉMICO: Código más limpio y moderno
+		     RIESGO CONTROLADO: Herramienta profesional estándar en industria
+		-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!--
+		     SPRING BOOT STARTER TEST
+		     Proporciona herramientas de testing integradas:
+		     - JUnit 5 para unit tests
+		     - Mockito para mocking
+		     - @SpringBootTest para testing de aplicación completa
+		     - TestContainers para integration tests
+
+		     BENEFICIO ACADÉMICO: Permite crear tests para demostrar funcionalidad
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<!-- =============================================================================== -->
+	<!-- CONFIGURACIÓN DE BUILD                                                         -->
+	<!-- =============================================================================== -->
+	<build>
+		<plugins>
+
+			<!--
+			     MAVEN COMPILER PLUGIN
+			     Configuración específica para Lombok y Java 22
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<!-- Paths para el procesador de anotaciones de Lombok -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
+			<!--
+			     SPRING BOOT MAVEN PLUGIN
+			     Plugin esencial que:
+			     - Empaqueta la aplicación como JAR ejecutable
+			     - Incluye Tomcat embebido en el JAR
+			     - Permite ejecutar con: mvn spring-boot:run
+			     - Crea JAR con todas las dependencias (fat JAR)
+			-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- Excluir Lombok del JAR final (no se necesita en runtime) -->
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
+
+		<!--
+        ===============================================================================
+        COMANDOS MAVEN ÚTILES PARA LA EVIDENCIA:
+        ===============================================================================
+
+        1. LIMPIAR Y COMPILAR:
+           mvn clean compile
+
+        2. EJECUTAR LA APLICACIÓN:
+           mvn spring-boot:run
+
+           URL: http://localhost:8080/proyectos
+
+        3. EMPAQUETAR COMO JAR EJECUTABLE:
+           mvn clean package
+
+        4. EJECUTAR JAR GENERADO:
+           java -jar target/GA7_AA3_EV01_springboot-0.0.1-SNAPSHOT.jar
+
+        5. EJECUTAR TESTS:
+           mvn test
+
+        ===============================================================================
+        CAMBIOS REALIZADOS EN ESTA ACTUALIZACIÓN:
+        ===============================================================================
+
+        ✅ CAMBIO PRINCIPAL: java.version de 24 → 22
+        ✅ AÑADIDOS: Comentarios académicos extensos
+        ✅ MEJORADA: Descripción del proyecto con contexto de evidencia
+        ✅ MANTENIDO: Lombok y todas las dependencias originales
+        ✅ OPTIMIZADO: Configuración del compilador para Lombok
+
+        ===============================================================================
+        -->

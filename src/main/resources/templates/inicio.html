@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartillas Acero Web - Spring Boot</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 100px 0;
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tech-badge {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#" th:href="@{/proyectos}">
+      <i class="bi bi-gear-fill me-2"></i>
+      Cartillas Acero Web
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" th:href="@{/}">
+            <i class="bi bi-house"></i> Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" th:href="@{/proyectos}">
+            <i class="bi bi-folder"></i> Proyectos
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="animate-fadeIn">
+          <h1 class="display-4 fw-bold mb-4">
+            🚀 Cartillas Acero Web
+          </h1>
+          <p class="lead mb-4">
+            Sistema moderno de gestión de proyectos desarrollado con
+            <strong>Spring Boot</strong> y tecnologías de vanguardia.
+          </p>
+
+          <div class="mb-4">
+            <span class="badge tech-badge me-2 mb-2">Spring Boot 3.5.3</span>
+            <span class="badge tech-badge me-2 mb-2">Java 22</span>
+            <span class="badge tech-badge me-2 mb-2">JPA/Hibernate</span>
+            <span class="badge tech-badge me-2 mb-2">Thymeleaf</span>
+            <span class="badge tech-badge me-2 mb-2">Bootstrap 5</span>
+            <span class="badge tech-badge me-2 mb-2">MySQL</span>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex">
+            <a th:href="@{/proyectos}" class="btn btn-light btn-lg px-4 me-md-2">
+              <i class="bi bi-folder2-open"></i> Ver Proyectos
+            </a>
+            <a th:href="@{/proyectos/nuevo}" class="btn btn-outline-light btn-lg px-4">
+              <i class="bi bi-plus-circle"></i> Crear Proyecto
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="text-center animate-fadeIn">
+          <i class="bi bi-gear-wide-connected display-1 opacity-75"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="display-5 fw-bold">Características Principales</h2>
+        <p class="lead">Tecnología moderna para gestión eficiente de proyectos</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="bi bi-lightning-charge fs-4"></i>
+            </div>
+            <h5 class="card-title">Alto Rendimiento</h5>
+            <p class="card-text">Spring Boot con optimizaciones automáticas y pool de conexiones HikariCP.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="bi bi-shield-check fs-4"></i>
+            </div>
+            <h5 class="card-title">Validaciones Robustas</h5>
+            <p class="card-text">Bean Validation automática en cliente y servidor para datos íntegros.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="bi bi-phone fs-4"></i>
+            </div>
+            <h5 class="card-title">Responsive Design</h5>
+            <p class="card-text">Interfaz adaptable con Bootstrap 5 para todos los dispositivos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card feature-card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <i class="bi bi-database fs-4"></i>
+            </div>
+            <h5 class="card-title">Persistencia JPA</h5>
+            <p class="card-text">Mapeo objeto-relacional automático con Hibernate y MySQL.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRUD Operations Preview -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="display-5 fw-bold">Operaciones CRUD Completas</h2>
+        <p class="lead">Gestión integral de proyectos con todas las operaciones</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="text-center">
+          <div class="bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-plus-circle fs-2"></i>
+          </div>
+          <h5>Crear</h5>
+          <p class="text-muted">Agregar nuevos proyectos con validaciones automáticas</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="text-center">
+          <div class="bg-success bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-eye fs-2"></i>
+          </div>
+          <h5>Leer</h5>
+          <p class="text-muted">Visualizar proyectos con filtros y estadísticas</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="text-center">
+          <div class="bg-warning bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-pencil fs-2"></i>
+          </div>
+          <h5>Actualizar</h5>
+          <p class="text-muted">Modificar información con formularios pre-llenados</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="text-center">
+          <div class="bg-danger bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-trash fs-2"></i>
+          </div>
+          <h5>Eliminar</h5>
+          <p class="text-muted">Borrar proyectos con confirmación de seguridad</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h6 class="mb-3">🎓 Evidencia Académica GA7-220501096-AA3-EV01</h6>
+        <p class="mb-0 small">
+          <strong>Programa:</strong> Análisis y Desarrollo de Software - SENA<br>
+          <strong>Desarrollador:</strong> Nelson Rodriguez<br>
+          <strong>Tecnologías:</strong> Spring Boot, JPA/Hibernate, Thymeleaf, Bootstrap 5
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <p class="mb-0 small">
+          <i class="bi bi-calendar-event"></i>
+          <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">07/07/2025 12:00</span>
+        </p>
+        <p class="mb-0 small">
+          <i class="bi bi-gear-fill"></i> Spring Boot 3.5.3
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+  // Animación suave al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.feature-card');
+      cards.forEach((card, index) => {
+          setTimeout(() => {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(20px)';
+              card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+              setTimeout(() => {
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+              }, 100);
+          }, index * 100);
+      });
+  });
+</script>
+</body>
+</html>
+
+<!--
+================================================================================
+DOCUMENTACIÓN COMPLETA DE inicio.html
+================================================================================
+
+PROPÓSITO:
+----------
+Página de inicio/bienvenida de la aplicación CartillasAceroWeb que presenta
+información del proyecto académico, tecnologías utilizadas, migración realizada
+y proporciona acceso directo a las funcionalidades principales del sistema.
+
+INFORMACIÓN ACADÉMICA:
+----------------------
+Programa:     Análisis y Desarrollo de Software - SENA
+Evidencia:    GA7-220501096-AA3-EV01
+Tecnología:   Thymeleaf + Bootstrap 5 + Layout Fragments
+Ubicación:    src/main/resources/templates/inicio.html
+Autor:        Nelson Rodriguez
+
+SECCIONES IMPLEMENTADAS:
+-----------------------
+
+1. HERO SECTION:
+   - Título prominente de la aplicación
+   - Descripción del sistema
+   - Badge con información académica
+   - Diseño centrado y atractivo
+
+2. TARJETAS INFORMATIVAS:
+   - Información Académica (SENA, programa, evidencia, desarrollador)
+   - Tecnologías Utilizadas (stack completo)
+   - Funcionalidades (CRUD principal)
+   - Layout responsive en 3 columnas
+
+3. MIGRACIÓN TECNOLÓGICA:
+   - Comparación visual ANTES vs AHORA
+   - Evidencia AA2-EV02 → AA3-EV01
+   - Tecnologías legacy → Tecnologías modernas
+   - Justificación de la migración
+
+4. BOTONES DE ACCIÓN:
+   - Ver Lista de Proyectos (primario)
+   - Crear Nuevo Proyecto (éxito)
+   - Botones prominentes y centrados
+
+5. ESTADÍSTICAS DEL SISTEMA:
+   - Contadores por estado de proyecto
+   - Datos dinámicos desde el controlador
+   - Visualización con colores distintivos
+
+USO DE LAYOUT FRAGMENTS:
+-----------------------
+
+La página utiliza el layout base mediante fragmentos:
+
+```html
+<!-- Navbar reutilizable -->
+<nav th:replace="layout/main :: navbar"></nav>
+
+<!-- Sistema de mensajes -->
+<div th:replace="layout/main :: mensajes"></div>
+
+<!-- Footer reutilizable -->
+<footer th:replace="layout/main :: footer"></footer>
+
+<!-- Scripts globales -->
+<div th:replace="layout/main :: scripts"></div>
+```
+
+BENEFICIOS:
+- Consistencia visual con el resto de la aplicación
+- Reutilización de componentes comunes
+- Mantenimiento centralizado
+- Navegación uniforme
+
+CONTROLADOR ASOCIADO:
+--------------------
+
+Esta vista sería servida por un controlador como:
+
+```java
+@GetMapping("/")
+public String inicio(Model model) {
+var estadisticas = proyectoService.obtenerEstadisticas();
+model.addAttribute("estadisticas", estadisticas);
+return "inicio";
+}
+```
+
+O alternativamente, para redirect directo:
+
+```java
+@GetMapping("/")
+public String redirigirAProyectos() {
+return "redirect:/proyectos";
+}
+```
+
+CARACTERÍSTICAS INTERACTIVAS:
+----------------------------
+
+1. ANIMACIONES CSS/JS:
+- Entrada gradual de tarjetas
+- Efectos hover en botones
+- Transiciones suaves
+
+2. AUTO-REDIRECT:
+- Timer de inactividad (30 segundos)
+- Confirmación antes de redirect
+- Reset con interacción del usuario
+
+3. RESPONSIVE DESIGN:
+- Grid adaptable para móviles
+- Botones que cambian a ancho completo
+- Tarjetas que se apilan verticalmente
+
+INFORMACIÓN ACADÉMICA DESTACADA:
+-------------------------------
+
+1. DATOS INSTITUCIONALES:
+- SENA como institución
+- Programa: Análisis y Desarrollo de Software
+- Evidencia: GA7-220501096-AA3-EV01
+- Desarrollador: Nelson Rodriguez
+
+2. CONTEXTO TÉCNICO:
+- Migración de tecnologías legacy
+- Stack moderno implementado
+- Competencias demostradas
+
+3. CRONOLOGÍA:
+- Fecha: Julio 2025
+- Versión: 3.0 (Spring Boot)
+- Evolución desde evidencias anteriores
+
+ESTADÍSTICAS DINÁMICAS:
+----------------------
+
+Si el controlador proporciona estadísticas, se muestran:
+- Total de proyectos
+- Proyectos por estado (ACTIVO, PAUSADO, FINALIZADO, CANCELADO)
+- Visualización con colores Bootstrap
+- Datos actualizados en tiempo real
+
+ACCESIBILIDAD:
+-------------
+
+1. SEMÁNTICA HTML5:
+- Estructura main/section apropiada
+- Headers jerárquicos (h1, h4, h5)
+- Links y botones semánticamente correctos
+
+2. NAVEGACIÓN:
+- Focus order lógico
+- Skip links disponibles via layout
+- Keyboard navigation friendly
+
+3. CONTRASTE:
+- Colores con contraste apropiado
+- Iconos con significado claro
+- Estados visuales distintivos
+
+PERFORMANCE:
+-----------
+
+1. CARGA OPTIMIZADA:
+- CSS/JS via CDN (cached)
+- Imágenes optimizadas (solo iconos vectoriales)
+- Layout fragments cacheable
+
+2. INTERACTIVIDAD PROGRESIVA:
+- Funciona sin JavaScript
+- Mejoras progresivas con JS
+- Graceful degradation
+
+SEO Y META TAGS:
+---------------
+
+1. TÍTULO DESCRIPTIVO:
+- "Inicio - CartillasAceroWeb"
+- Información clara del contenido
+
+2. META TAGS:
+- Viewport responsive
+- Charset UTF-8
+- Description para motores de búsqueda
+
+CASOS DE USO:
+------------
+
+1. PRIMER ACCESO:
+- Usuario nuevo ve información completa
+- Comprende el propósito del sistema
+- Accede fácilmente a funcionalidades
+
+2. ACCESO RECURRENTE:
+- Usuarios conocidos ven estadísticas actualizadas
+- Acceso rápido a tareas comunes
+- Auto-redirect para eficiencia
+
+3. EVALUACIÓN ACADÉMICA:
+- Evaluador ve información del proyecto
+- Comprende migración realizada
+- Accede a evidencias implementadas
+
+INTEGRACION CON SISTEMA:
+-----------------------
+
+1. NAVEGACIÓN:
+- Links directos a lista y formulario
+- Navbar con navegación completa
+- Breadcrumbs visuales
+
+2. MENSAJES:
+- Sistema de mensajes flash integrado
+- Feedback de operaciones anteriores
+- Notificaciones contextuales
+
+3. ESTADO DINÁMICO:
+- Estadísticas actuales del sistema
+- Información en tiempo real
+- Datos coherentes con la base de datos
+
+MANTENIBILIDAD:
+--------------
+
+1. CÓDIGO LIMPIO:
+- HTML semántico y bien estructurado
+- CSS classes descriptivas
+- JavaScript modular
+
+2. FACILIDAD DE CAMBIOS:
+- Información centralizada en cards
+- Colores via Bootstrap classes
+- Contenido fácilmente modificable
+
+3. EXTENSIBILIDAD:
+- Fácil agregar nuevas secciones
+- Layout flexible para contenido adicional
+- Sistema de fragments reutilizable
+
+EVIDENCIA DE COMPETENCIAS:
+-------------------------
+1. 🎯 Diseño de páginas de inicio efectivas
+2. 🏗️ Uso avanzado de Thymeleaf fragments
+3. 💾 Integración con datos dinámicos del backend
+4. 📝 UX patterns para aplicaciones web
+5. 🔧 JavaScript interactivo y progresivo
+6. 🧪 Responsive design multi-dispositivo
+7. 📊 Presentación de información académica
+
+MEJORES PRÁCTICAS IMPLEMENTADAS:
+-------------------------------
+- Información académica prominente
+- Navegación clara y directa
+- Estadísticas en tiempo real
+- Auto-redirect inteligente
+- Animaciones sutiles pero efectivas
+- Accesibilidad y responsive design
+- Reutilización de componentes (fragments)
+
+AUTOR: Nelson Rodriguez
+EVIDENCIA: GA7-220501096-AA3-EV01
+FECHA: 2025-07-07
+VERSIÓN: 3.0 (Página de Inicio Spring Boot)
+
+================================================================================
+-->

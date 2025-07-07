@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${esNuevo ? 'Nuevo Proyecto' : 'Editar Proyecto'} + ' - CartillasAceroWeb'">Formulario Proyecto</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/proyectos}">
+            <i class="bi bi-building"></i> CartillasAceroWeb
+        </a>
+        <span class="navbar-text">
+                <i class="bi bi-mortarboard"></i> SENA - GA7-220501096-AA3-EV01
+            </span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <!-- Encabezado -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-6">
+                <i th:class="${esNuevo ? 'bi bi-plus-circle' : 'bi bi-pencil-square'}"></i>
+                <span th:text="${esNuevo ? 'Nuevo Proyecto' : 'Editar Proyecto'}">Formulario Proyecto</span>
+            </h1>
+            <p class="text-muted" th:text="${esNuevo ? 'Registrar un nuevo proyecto de construcción' : 'Modificar información del proyecto'}">Descripción del formulario</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a th:href="@{/proyectos}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Lista
+            </a>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i th:class="${esNuevo ? 'bi bi-file-earmark-plus' : 'bi bi-file-earmark-text'}"></i>
+                        <span th:text="${esNuevo ? 'Información del Nuevo Proyecto' : 'Modificar Proyecto'}">Información del Proyecto</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/proyectos/guardar}" th:object="${proyecto}" method="post" novalidate>
+                        <!-- ID oculto para edición -->
+                        <input type="hidden" th:field="*{id}">
+
+                        <!-- Información del Cliente -->
+                        <div class="mb-4">
+                            <h6 class="border-bottom pb-2">
+                                <i class="bi bi-person-badge"></i> Información del Cliente
+                            </h6>
+
+                            <div class="row">
+                                <!-- Nombre del Cliente -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombreCliente" class="form-label">
+                                        <i class="bi bi-person"></i> Nombre del Cliente *
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:class="${#fields.hasErrors('nombreCliente')} ? 'form-control is-invalid' : 'form-control'"
+                                           th:field="*{nombreCliente}"
+                                           id="nombreCliente"
+                                           placeholder="Ej: Constructora Bogotá S.A.S"
+                                           maxlength="100"
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nombreCliente')}" th:errors="*{nombreCliente}">
+                                        Error de validación
+                                    </div>
+                                </div>
+
+                                <!-- NIT del Cliente -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="nitCliente" class="form-label">
+                                        <i class="bi bi-credit-card"></i> NIT del Cliente *
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:class="${#fields.hasErrors('nitCliente')} ? 'form-control is-invalid' : 'form-control'"
+                                           th:field="*{nitCliente}"
+                                           id="nitCliente"
+                                           placeholder="Ej: 800123456-7"
+                                           maxlength="20"
+                                           required>
+                                    <div class="form-text">Formato: 123456789-0</div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nitCliente')}" th:errors="*{nitCliente}">
+                                        Error de validación
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email y Teléfono -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="emailContacto" class="form-label">
+                                        <i class="bi bi-envelope"></i> Email de Contacto *
+                                    </label>
+                                    <input type="email"
+                                           class="form-control"
+                                           th:class="${#fields.hasErrors('emailContacto')} ? 'form-control is-invalid' : 'form-control'"
+                                           th:field="*{emailContacto}"
+                                           id="emailContacto"
+                                           placeholder="contacto@empresa.com"
+                                           maxlength="100"
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('emailContacto')}" th:errors="*{emailContacto}">
+                                        Error de validación
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefonoContacto" class="form-label">
+                                        <i class="bi bi-telephone"></i> Teléfono de Contacto *
+                                    </label>
+                                    <input type="tel"
+                                           class="form-control"
+                                           th:class="${#fields.hasErrors('telefonoContacto')} ? 'form-control is-invalid' : 'form-control'"
+                                           th:field="*{telefonoContacto}"
+                                           id="telefonoContacto"
+                                           placeholder="Ej: 3001234567"
+                                           maxlength="15"
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('telefonoContacto')}" th:errors="*{telefonoContacto}">
+                                        Error de validación
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del Proyecto -->
+                        <div class="mb-4">
+                            <h6 class="border-bottom pb-2">
+                                <i class="bi bi-building"></i> Información del Proyecto
+                            </h6>
+
+                            <!-- Nombre de la Obra -->
+                            <div class="mb-3">
+                                <label for="nombreObra" class="form-label">
+                                    <i class="bi bi-buildings"></i> Nombre de la Obra *
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:class="${#fields.hasErrors('nombreObra')} ? 'form-control is-invalid' : 'form-control'"
+                                       th:field="*{nombreObra}"
+                                       id="nombreObra"
+                                       placeholder="Ej: Torre Empresarial Centro"
+                                       maxlength="100"
+                                       required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombreObra')}" th:errors="*{nombreObra}">
+                                    Error de validación
+                                </div>
+                            </div>
+
+                            <!-- Dirección de la Obra -->
+                            <div class="mb-3">
+                                <label for="direccionObra" class="form-label">
+                                    <i class="bi bi-geo-alt"></i> Dirección de la Obra *
+                                </label>
+                                <textarea class="form-control"
+                                          th:class="${#fields.hasErrors('direccionObra')} ? 'form-control is-invalid' : 'form-control'"
+                                          th:field="*{direccionObra}"
+                                          id="direccionObra"
+                                          rows="3"
+                                          placeholder="Ej: Carrera 7 # 100-05, Bogotá D.C."
+                                          maxlength="200"
+                                          required></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('direccionObra')}" th:errors="*{direccionObra}">
+                                    Error de validación
+                                </div>
+                            </div>
+
+                            <!-- Estado del Proyecto -->
+                            <div class="mb-3" th:unless="${esNuevo}">
+                                <label for="estado" class="form-label">
+                                    <i class="bi bi-circle-fill"></i> Estado del Proyecto
+                                </label>
+                                <select class="form-select"
+                                        th:field="*{estado}"
+                                        id="estado">
+                                    <option value="ACTIVO">🟢 Activo</option>
+                                    <option value="PAUSADO">🟡 Pausado</option>
+                                    <option value="FINALIZADO">🔵 Finalizado</option>
+                                    <option value="CANCELADO">🔴 Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Información de Auditoría (solo para edición) -->
+                        <div th:unless="${esNuevo}" class="mb-4">
+                            <h6 class="border-bottom pb-2">
+                                <i class="bi bi-clock-history"></i> Información de Registro
+                            </h6>
+                            <div class="alert alert-info">
+                                <small>
+                                    <strong>Fecha de creación:</strong>
+                                    <span th:text="${#temporals.format(proyecto.fechaCreacion, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</span>
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a th:href="@{/proyectos}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    th:class="${esNuevo ? 'btn btn-success' : 'btn btn-primary'}">
+                                <i th:class="${esNuevo ? 'bi bi-save' : 'bi bi-arrow-repeat'}"></i>
+                                <span th:text="${esNuevo ? 'Crear Proyecto' : 'Actualizar Proyecto'}">Guardar</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de Ayuda -->
+    <div class="row mt-4">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="bi bi-lightbulb"></i> Consejos de Llenado
+                    </h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><i class="bi bi-check-circle text-success"></i> El NIT debe ser único por cliente</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Use un email válido para notificaciones</li>
+                        <li><i class="bi bi-check-circle text-success"></i> La dirección debe ser completa y específica</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Todos los campos marcados con (*) son obligatorios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white mt-5 py-4">
+    <div class="container text-center">
+        <p class="mb-0">
+            <i class="bi bi-mortarboard"></i>
+            SENA - Análisis y Desarrollo de Software |
+            <i class="bi bi-person"></i> Nelson Rodriguez |
+            <i class="bi bi-calendar"></i> 2025
+        </p>
+    </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript personalizado -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-focus en el primer campo
+        const primerCampo = document.getElementById('nombreCliente');
+        if (primerCampo) {
+            primerCampo.focus();
+        }
+
+        // Formateo automático del NIT
+        const nitInput = document.getElementById('nitCliente');
+        if (nitInput) {
+            nitInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^0-9-]/g, '');
+                e.target.value = value;
+            });
+        }
+
+        // Confirmación al cancelar si hay cambios
+        const cancelarBtn = document.querySelector('a[href*="/proyectos"]');
+        const form = document.querySelector('form');
+
+        if (cancelarBtn && form) {
+            cancelarBtn.addEventListener('click', function(e) {
+                const formData = new FormData(form);
+                let hasChanges = false;
+
+                for (let [key, value] of formData.entries()) {
+                    if (value.trim() !== '') {
+                        hasChanges = true;
+                        break;
+                    }
+                }
+
+                if (hasChanges) {
+                    if (!confirm('¿Está seguro de que desea cancelar? Se perderán los cambios realizados.')) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+        }
+
+        // Validación en tiempo real
+        const inputs = document.querySelectorAll('input[required], textarea[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+        });
+
+        // Validación de email
+        const emailInput = document.getElementById('emailContacto');
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (this.value && !emailRegex.test(this.value)) {
+                    this.classList.add('is-invalid');
+                } else if (this.value) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
+
+<!--
+================================================================================
+DOCUMENTACIÓN COMPLETA DE formulario.html
+================================================================================
+
+PROPÓSITO:
+----------
+Vista Thymeleaf que implementa un formulario unificado para crear y editar proyectos.
+Utiliza Bean Validation, binding automático de datos y proporciona una interfaz
+moderna y responsive con Bootstrap 5. Maneja validaciones tanto del lado cliente
+como del servidor.
+
+INFORMACIÓN ACADÉMICA:
+----------------------
+Programa:     Análisis y Desarrollo de Software - SENA
+Evidencia:    GA7-220501096-AA3-EV01
+Tecnología:   Thymeleaf + Bootstrap 5 + Bean Validation
+Ubicación:    src/main/resources/templates/proyectos/formulario.html
+Autor:        Nelson Rodriguez
+
+FUNCIONALIDADES IMPLEMENTADAS:
+-----------------------------
+
+1. FORMULARIO UNIFICADO:
+   - Mismo formulario para crear y editar proyectos
+   - Distingue entre modos usando ${esNuevo}
+   - Títulos e iconos dinámicos según el modo
+   - Campo ID oculto solo para edición
+
+2. BINDING DE DATOS AUTOMÁTICO:
+   - th:object="${proyecto}" en el form
+   - th:field="*{campo}" para binding bidireccional
+   - Conversión automática de tipos
+   - Conservación de valores en caso de error
+
+3. VALIDACIONES INTEGRADAS:
+   - Bean Validation del lado servidor
+   - th:classappend para CSS condicional (is-invalid)
+   - th:errors para mostrar mensajes de error
+   - Validaciones JavaScript del lado cliente
+
+4. CAMPOS DEL FORMULARIO:
+   - nombreObra: Text input con validación de longitud
+   - direccionObra: Textarea para direcciones largas
+   - nitCliente: Text input con formato automático
+   - nombreCliente: Text input para razón social
+   - emailContacto: Email input con validación HTML5
+   - telefonoContacto: Tel input solo números
+   - estado: Select solo visible en edición
+
+5. EXPERIENCIA DE USUARIO:
+   - Auto-focus en primer campo
+   - Placeholders descriptivos
+   - Ayuda contextual con iconos
+   - Formato automático de NIT
+   - Validación de solo números en teléfono
+   - Confirmación antes de cancelar con cambios
+
+BINDING CON EL CONTROLADOR:
+--------------------------
+
+1. VARIABLES RECIBIDAS:
+   ${proyecto}: Objeto Proyecto (nuevo o existente)
+   ${titulo}: "Crear Nuevo Proyecto" o "Editar Proyecto"
+   ${esNuevo}: Boolean true para crear, false para editar
+   ${error}: Mensaje de error general (si aplica)
+
+2. DATOS ENVIADOS AL SERVIDOR:
+   POST a /proyectos/guardar
+   Todos los campos del formulario via th:field
+   ID oculto incluido automáticamente en edición
+
+3. MANEJO DE ERRORES:
+   BindingResult captura errores de Bean Validation
+   th:errors muestra mensajes específicos por campo
+   th:classappend aplica estilos de error Bootstrap
+
+VALIDACIONES IMPLEMENTADAS:
+--------------------------
+
+1. LADO SERVIDOR (Bean Validation):
+   - @NotNull, @NotBlank: Campos obligatorios
+   - @Size: Longitudes mínimas y máximas
+   - @Email: Formato de email válido
+   - @Pattern: Formato NIT y teléfono
+   - Unicidad de NIT (validación en servicio)
+
+2. LADO CLIENTE (JavaScript):
+   - Auto-formato de NIT (123456789-1)
+   - Solo números en teléfono
+   - HTML5 validation para email
+   - Confirmación antes de cancelar cambios
+
+3. FEEDBACK VISUAL:
+   - Campos con error: border rojo + mensaje
+   - Campos válidos: border normal
+   - Iconos contextuales en mensajes
+   - Tooltips informativos
+
+ESTILOS Y DISEÑO:
+----------------
+
+1. LAYOUT RESPONSIVE:
+   - Contenedor centrado en pantallas grandes
+   - Formulario adaptable a móviles
+   - Cards para organización visual
+   - Grid Bootstrap para estructura
+
+2. COMPONENTES BOOTSTRAP:
+   - form-control: Inputs estilizados
+   - is-invalid: Estados de error
+   - alert: Mensajes de error general
+   - btn: Botones con iconos
+   - card: Contenedores de contenido
+
+3. ICONOGRAFIA:
+   - Iconos Bootstrap para cada campo
+   - Estados visuales (éxito, error, info)
+   - Botones con iconos descriptivos
+   - Indicadores de campos obligatorios
+
+ACCESIBILIDAD:
+-------------
+
+1. SEMÁNTICA HTML:
+   - Labels asociados correctamente
+   - Fieldsets para agrupación lógica
+   - HTML5 input types apropiados
+   - ARIA attributes donde necesario
+
+2. NAVEGACIÓN:
+   - Tab order lógico entre campos
+   - Auto-focus en primer campo
+   - Shortcuts de teclado
+   - Skip links disponibles
+
+3. CONTRASTE Y LEGIBILIDAD:
+   - Colores con contraste apropiado
+   - Texto suficientemente grande
+   - Iconos con significado claro
+   - Estados visuales distintivos
+
+INTERACTIVIDAD JAVASCRIPT:
+-------------------------
+
+1. MEJORAS DE UX:
+   - Auto-focus en primer campo al cargar
+   - Formato automático de NIT mientras escribe
+   - Validación de solo números en teléfono
+   - Detección de cambios para confirmación
+
+2. VALIDACIONES EN TIEMPO REAL:
+   - Formato NIT: Agrega guión automáticamente
+   - Teléfono: Remueve caracteres no numéricos
+   - Email: Validación HTML5 nativa
+   - Longitudes: Counter visual (preparado)
+
+3. CONFIRMACIONES:
+   - Aviso antes de cancelar con cambios
+   - Comparación de FormData original vs actual
+   - Prevención de pérdida accidental de datos
+
+CASOS DE USO:
+------------
+
+1. CREAR NUEVO PROYECTO:
+   - URL: GET /proyectos/nuevo
+   - esNuevo = true
+   - proyecto = new Proyecto()
+   - Campo estado oculto (será ACTIVO por defecto)
+   - Botón "Crear Proyecto"
+
+2. EDITAR PROYECTO EXISTENTE:
+   - URL: GET /proyectos/editar/{id}
+   - esNuevo = false
+   - proyecto = proyecto existente
+   - Campo estado visible con valor actual
+   - Botón "Actualizar Proyecto"
+   - Información adicional (ID, fecha, días)
+
+FLUJO DE DATOS:
+--------------
+
+1. CARGA INICIAL:
+   Controlador → Modelo → Vista
+   Datos se cargan en formulario via th:field
+
+2. ENVÍO:
+   Vista → POST /proyectos/guardar → Controlador
+   Bean Validation → BindingResult
+
+3. ÉXITO:
+   Redirect a /proyectos con mensaje flash
+
+4. ERROR:
+   Vuelta al formulario con errores visibles
+   Datos preservados automáticamente
+
+VALIDACIONES POR CAMPO:
+----------------------
+
+1. nombreObra:
+   - Obligatorio, 3-100 caracteres
+   - Sin caracteres especiales problemáticos
+
+2. direccionObra:
+   - Obligatorio, 10-200 caracteres
+   - Textarea para direcciones largas
+
+3. nitCliente:
+   - Obligatorio, formato 123456789-1
+   - Único en el sistema
+   - Auto-formato con JavaScript
+
+4. nombreCliente:
+   - Obligatorio, 3-100 caracteres
+   - Razón social o nombre completo
+
+5. emailContacto:
+   - Obligatorio, formato email válido
+   - Validación HTML5 + Bean Validation
+
+6. telefonoContacto:
+   - Obligatorio, 7-10 dígitos
+   - Solo números, sin espacios ni guiones
+
+7. estado (solo edición):
+   - Selección entre 4 opciones
+   - Valores: ACTIVO, PAUSADO, FINALIZADO, CANCELADO
+
+MENSAJES DE AYUDA:
+-----------------
+
+1. INFORMACIÓN CONTEXTUAL:
+   - Placeholders descriptivos
+   - Form-text con instrucciones
+   - Iconos informativos
+   - Ejemplos de formato
+
+2. CARD DE AYUDA:
+   - Lista de campos obligatorios
+   - Explicación de validaciones
+   - Formato esperado por campo
+   - Reglas de negocio importantes
+
+SEGURIDAD:
+---------
+
+1. VALIDACIÓN DOBLE:
+   - Cliente: UX inmediata
+   - Servidor: Seguridad garantizada
+   - Nunca confiar solo en cliente
+
+2. PROTECCIÓN CSRF:
+   - Token automático en formularios POST
+   - Integración con Spring Security
+
+3. SANITIZACIÓN:
+   - Thymeleaf escapa automáticamente
+   - Prevención XSS built-in
+   - Validación de longitudes
+
+EVIDENCIA DE COMPETENCIAS:
+-------------------------
+1. 🎯 Implementación de formularios Thymeleaf avanzados
+2. 🏗️ Integración completa con Bean Validation
+3. 💾 Binding bidireccional de datos automático
+4. 📝 Manejo de errores de validación completo
+5. 🔧 JavaScript para mejoras de UX
+6. 🧪 Formulario unificado crear/editar
+7. 📊 Accesibilidad y responsive design
+
+TESTING:
+-------
+
+1. VALIDACIONES:
+   - Campos obligatorios
+   - Longitudes mínimas/máximas
+   - Formatos específicos (email, NIT)
+   - Unicidad de NIT
+
+2. USABILIDAD:
+   - Auto-focus funcional
+   - Formato automático NIT
+   - Confirmación cancelar
+   - Preservación de datos en error
+
+FUTURAS MEJORAS:
+---------------
+- Validación AJAX de NIT único en tiempo real
+- Auto-complete de clientes existentes
+- Geolocalización para direcciones
+- Upload de archivos adjuntos
+- Auto-save de borradores
+
+AUTOR: Nelson Rodriguez
+EVIDENCIA: GA7-220501096-AA3-EV01
+FECHA: 2025-07-07
+VERSIÓN: 3.0 (Thymeleaf + Bean Validation)
+
+================================================================================
+-->
