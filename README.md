@@ -127,4 +127,4 @@ La estructura de paquetes sigue las convenciones de una aplicación Spring Boot 
     -   `servicio/`: Clases de servicio que contienen la lógica de negocio.
 -   `src/main/resources/`
     -   `templates/`: Plantillas HTML de Thymeleaf para las vistas.
-    -   `application.properties`: Archivo de configuración principal....
+    -   `application.properties`: Archivo de configuración principal....comenatrio final
