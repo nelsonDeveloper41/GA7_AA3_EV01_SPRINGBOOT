@@ -192,6 +192,7 @@
 </body>
 </html>
 <!--
+<!--
 ================================================================================
 DOCUMENTACIÓN COMPLETA DE confirmar-eliminar.html
 ================================================================================
@@ -199,9 +200,9 @@ DOCUMENTACIÓN COMPLETA DE confirmar-eliminar.html
 PROPÓSITO:
 ----------
 Vista Thymeleaf que implementa una página de confirmación segura antes de eliminar
-un proyecto. Proporciona múltiples niveles de confirmación y alternativas para
-prevenir eliminaciones accidentales, siguiendo las mejores prácticas de UX
-para acciones destructivas.
+un proyecto. Esta vista corresponde a la operación "Delete" (Borrar) del CRUD,
+añadiendo una capa de seguridad crucial para prevenir la pérdida accidental de datos.
+El diseño se centra en la claridad y la prevención de errores.
 
 INFORMACIÓN ACADÉMICA:
 ----------------------
@@ -211,273 +212,72 @@ Tecnología:   Thymeleaf + Bootstrap 5 + JavaScript
 Ubicación:    src/main/resources/templates/proyectos/confirmar-eliminar.html
 Autor:        Nelson Rodriguez
 
-FLUJO DE ELIMINACIÓN:
---------------------
-1. Usuario hace clic en "Eliminar" en la lista de proyectos
-2. GET /proyectos/eliminar/{id} → Muestra esta vista de confirmación
-3. Usuario ve todos los datos del proyecto a eliminar
-4. Usuario tiene múltiples opciones:
-   - Cancelar (botón verde, auto-focus)
-   - Pausar proyecto (alternativa)
-   - Cancelar proyecto (alternativa)
-   - Eliminar permanentemente (botón rojo)
-5. Si elige eliminar → prompt JavaScript solicita escribir "ELIMINAR"
-6. Si confirma → POST /proyectos/eliminar → Eliminación real
-7. Redirect a lista con mensaje de confirmación
+FLUJO DE ELIMINACIÓN IMPLEMENTADO:
+----------------------------------
+1. El usuario hace clic en el ícono de "Eliminar" en la lista de proyectos.
+2. Es dirigido a esta página (GET /proyectos/eliminar/{id}).
+3. La vista muestra los detalles del proyecto a eliminar y una advertencia clara.
+4. Para proceder, el usuario DEBE escribir el nombre exacto de la obra en un campo de texto.
+5. Solo cuando el nombre coincide, el botón "Eliminar Definitivamente" se habilita.
+6. Al hacer clic, una última alerta de confirmación (`confirm()`) aparece como barrera final.
+7. Si se confirma, se envía la petición (POST /proyectos/eliminar) para borrar el registro.
+8. El sistema redirige a la lista de proyectos con un mensaje de éxito.
 
-COMPONENTES DE SEGURIDAD UX:
----------------------------
+COMPONENTES DE SEGURIDAD Y UX:
+------------------------------
 
-1. ALERTAS VISUALES:
-   - Alert danger prominente con advertencia
-   - Iconos de advertencia en múltiples lugares
-   - Colores rojos para elementos destructivos
-   - Texto claro sobre irreversibilidad
+1. **VALIDACIÓN POR COINCIDENCIA DE NOMBRE:**
+   - Impide la eliminación por clics accidentales. El usuario debe realizar un esfuerzo
+     consciente (escribir el nombre) para habilitar la acción destructiva.
 
-2. INFORMACIÓN COMPLETA:
-   - Todos los datos del proyecto visibles
-   - ID, nombre, cliente, contactos, estado
-   - Días transcurridos desde creación
-   - Estado actual con badges de colores
+2. **FEEDBACK VISUAL INMEDIATO:**
+   - El script de JavaScript valida en tiempo real si el nombre introducido es correcto,
+     habilitando/deshabilitando el botón de inmediato.
 
-3. CONFIRMACIÓN DOBLE:
-   - Primera confirmación: clic en botón rojo
-   - Segunda confirmación: prompt con palabra clave "ELIMINAR"
-   - Loading state mientras procesa
+3. **DISEÑO CENTRADO EN LA ACCIÓN:**
+   - Se eliminaron botones de acciones alternativas (como "Editar en su lugar") para no
+     distraer al usuario. El flujo es simple: o se elimina, o se cancela.
 
-4. ALTERNATIVAS CLARAS:
-   - Botón verde "No, Mantener Proyecto" (auto-focus)
-   - Opciones para pausar o cancelar en lugar de eliminar
-   - Links para volver a lista sin eliminar
+4. **ADVERTENCIAS VISUALES CLARAS:**
+   - Uso intensivo del color rojo, íconos de advertencia (`bi-exclamation-triangle`) y
+     alertas de Bootstrap para comunicar el peligro de la acción.
 
-5. PREVENCIÓN DE ERRORES:
-   - Auto-focus en botón de cancelar
-   - Warning al intentar salir de la página
-   - Deshabilitación de botón tras hacer clic
-   - Loading spinner durante procesamiento
+5. **CONFIRMACIÓN FINAL:**
+   - Un `confirm()` de JavaScript actúa como la última oportunidad para que el usuario
+     cancele la operación antes de que sea irreversible.
 
 BINDING CON EL CONTROLADOR:
 --------------------------
 
-1. DATOS RECIBIDOS:
-   ${proyecto}: Objeto completo del proyecto a eliminar
-   Todos los campos disponibles para mostrar información
+1. **DATOS RECIBIDOS:**
+   - `${proyecto}`: Objeto `Proyecto` completo, pasado desde el controlador para
+     mostrar los datos y para la validación en el script.
 
-2. FORMULARIO DE ELIMINACIÓN:
-   POST a /proyectos/eliminar
-   Campo hidden "id" con el ID del proyecto
-   onclick="return confirmarEliminacion()" para validación JS
-
-3. FORMULARIOS DE ALTERNATIVAS:
-   POST a /proyectos/cambiar-estado
-   Campos: id + nuevoEstado (PAUSADO/CANCELADO)
-
-ELEMENTOS VISUALES:
-------------------
-
-1. NAVBAR CONSISTENTE:
-   - Mismo navbar que otras vistas
-   - Link de regreso a lista de proyectos
-
-2. ENCABEZADO DISTINTIVO:
-   - Título rojo con icono de advertencia
-   - Subtítulo explicativo
-   - Botón de escape prominente
-
-3. TARJETA PRINCIPAL:
-   - Border rojo para indicar peligro
-   - Header rojo con título claro
-   - Información organizada en filas
-
-4. INFORMACIÓN DEL PROYECTO:
-   - Iconos contextuales para cada campo
-   - Links funcionales (email, teléfono)
-   - Badges para estado con colores apropiados
-   - Formateo de fechas legible
-
-5. ZONA DE CONFIRMACIÓN:
-   - Background gris claro para destacar
-   - Icono grande de pregunta
-   - Mensaje centrado y claro
-   - Nombre del proyecto resaltado
+2. **FORMULARIO DE ELIMINACIÓN:**
+   - Envía una petición `POST` a `/proyectos/eliminar`.
+   - Incluye el `id` del proyecto en un campo oculto.
+   - Usa un atributo `th:data-nombre-obra` para pasar el nombre del proyecto al
+     script de forma segura, evitando problemas de codificación.
 
 JAVASCRIPT INTERACTIVO:
-----------------------
-
-1. FUNCIÓN confirmarEliminacion():
-   - Prompt con mensaje detallado
-   - Incluye nombre del proyecto y cliente
-   - Requiere escribir exactamente "ELIMINAR"
-   - Loading state con spinner
-   - Cancelación clara con alert
-
-2. AUTO-FOCUS Y UX:
-   - Focus automático en botón de cancelar
-   - Prevención de salida accidental (beforeunload)
-   - Remoción de warning al enviar formulario
-
-3. THYMELEAF INLINE:
-   - Variables JavaScript desde Thymeleaf
-   - Datos del proyecto disponibles en JS
-   - Mensajes dinámicos personalizados
-
-ALTERNATIVAS A LA ELIMINACIÓN:
------------------------------
-
-1. PAUSAR PROYECTO:
-   - Formulario independiente
-   - Cambia estado a PAUSADO
-   - Mantiene historial completo
-   - Botón warning (amarillo)
-
-2. CANCELAR PROYECTO:
-   - Formulario independiente
-   - Cambia estado a CANCELADO
-   - Preserva datos para auditoría
-   - Botón outline-danger
-
-3. MANTENER PROYECTO:
-   - Link directo a lista
-   - No realiza cambios
-   - Botón success prominente
-   - Auto-focus para seguridad
-
-ACCESIBILIDAD:
--------------
-
-1. SEMÁNTICA HTML:
-   - role="alert" en alertas importantes
-   - Labels y títulos descriptivos
-   - Estructura de headings lógica
-   - Links y botones semánticamente correctos
-
-2. NAVEGACIÓN:
-   - Tab order que prioriza cancelación
-   - Shortcuts de teclado disponibles
-   - Escape paths claros
-   - Focus management apropiado
-
-3. CONTRASTE Y LEGIBILIDAD:
-   - Colores con contraste suficiente
-   - Iconos con significado claro
-   - Texto legible en todos los tamaños
-   - Estados visuales distintivos
-
-RESPONSIVE DESIGN:
------------------
-
-1. GRID BOOTSTRAP:
-   - Centrado en pantallas grandes (col-lg-8)
-   - Adaptación automática a móviles
-   - Botones apilados en pantallas pequeñas
-
-2. COMPONENTES ADAPTATIVOS:
-   - Cards responsivos
-   - Botones que cambian a w-100 en móviles
-   - Texto que se ajusta automáticamente
-
-INTEGRACIÓN CON BACKEND:
 -----------------------
 
-1. ENDPOINT GET /proyectos/eliminar/{id}:
-   - Carga datos del proyecto
-   - Valida existencia
-   - Maneja errores con redirect
+1. **HABILITACIÓN DINÁMICA DE BOTÓN:**
+   - El script compara el valor del `input` con el nombre correcto del proyecto
+     (obtenido del atributo `data-nombre-obra`).
+   - El botón `btnEliminar` cambia su estado `disabled` basado en el resultado.
 
-2. ENDPOINT POST /proyectos/eliminar:
-   - Procesa eliminación real
-   - Transaccional y seguro
-   - Mensaje de confirmación
-
-3. ENDPOINT POST /proyectos/cambiar-estado:
-   - Alternativa no destructiva
-   - Preserva datos completos
-   - Cambio de estado auditado
-
-CASOS DE USO CUBIERTOS:
-----------------------
-
-1. ELIMINACIÓN INTENCIONAL:
-   - Usuario confirma paso a paso
-   - Información clara de qué se elimina
-   - Proceso seguro y auditado
-
-2. ELIMINACIÓN ACCIDENTAL:
-   - Múltiples puntos de cancelación
-   - Auto-focus en opción segura
-   - Advertencias claras
-
-3. INDECISIÓN DEL USUARIO:
-   - Alternativas claras disponibles
-   - Información completa para decidir
-   - Opciones reversibles vs irreversibles
-
-4. NAVEGACIÓN INCORRECTA:
-   - Links de escape prominentes
-   - Warning al salir de la página
-   - Breadcrumb visual claro
-
-SEGURIDAD:
----------
-
-1. VALIDACIÓN DE ENTRADA:
-   - ID del proyecto validado en backend
-   - Verificación de existencia
-   - Manejo de proyectos inexistentes
-
-2. CSRF PROTECTION:
-   - Formularios POST con tokens automáticos
-   - Integración con Spring Security preparada
-
-3. CONFIRMACIÓN ROBUSTA:
-   - Doble confirmación requerida
-   - Palabra clave específica
-   - No eliminación por accidente de UI
-
-TESTING SUGERIDO:
-----------------
-
-1. FUNCIONAL:
-   - Cancelación en cada punto
-   - Confirmación correcta
-   - Formularios de alternativas
-   - Links de navegación
-
-2. UX:
-   - Auto-focus funcional
-   - Warnings de navegación
-   - Loading states
-   - Responsive design
-
-3. ACCESIBILIDAD:
-   - Navegación por teclado
-   - Screen readers
-   - Contraste de colores
+2. **AUTO-FOCUS:**
+   - Se hace foco automáticamente en el campo de confirmación para mejorar la
+     experiencia de usuario y guiar la siguiente acción.
 
 EVIDENCIA DE COMPETENCIAS:
 -------------------------
-1. 🎯 Implementación de UX patterns para acciones destructivas
-2. 🏗️ Integración completa con controladores Spring MVC
-3. 💾 Manejo de formularios y validaciones JavaScript
-4. 📝 Diseño centrado en seguridad del usuario
-5. 🔧 Responsive design y accesibilidad
-6. 🧪 Alternativas no destructivas implementadas
-7. 📊 Información completa y transparente
-
-MEJORES PRÁCTICAS DEMOSTRADAS:
------------------------------
-- Confirmación doble para acciones irreversibles
-- Auto-focus en opción segura
-- Información completa antes de decidir
-- Alternativas claras a la eliminación
-- Feedback visual claro en cada estado
-- Prevención de errores de navegación
-- Loading states para operaciones lentas
-
-AUTOR: Nelson Rodriguez
-EVIDENCIA: GA7-220501096-AA3-EV01
-FECHA: 2025-07-07
-VERSIÓN: 3.0 (Thymeleaf + UX Segura)
+1. 🎯 Implementación de patrones de UX seguros para acciones destructivas.
+2. 🏗️ Integración efectiva entre el controlador Spring MVC y la vista Thymeleaf.
+3. 💾 Manejo de formularios y validaciones en el lado del cliente con JavaScript.
+4. 📝 Diseño de interfaz claro y enfocado, eliminando distracciones.
+5. 🔧 Uso de atributos `data-*` para una comunicación segura entre Thymeleaf y JavaScript.
 
 ================================================================================
 -->

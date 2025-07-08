@@ -120,3 +120,107 @@
 
 </body>
 </html>
+
+<!--
+================================================================================
+DOCUMENTACIÓN COMPLETA DE detalles.html
+================================================================================
+
+PROPÓSITO:
+----------
+Vista Thymeleaf de solo lectura que muestra toda la información detallada de un
+proyecto específico. Esta página es accesible desde la lista de proyectos y
+ofrece una vista completa de los datos del proyecto y del cliente asociado.
+Esta vista representa la **"Read" (Lectura)** dentro de la operaciones CRUD
+(Create, Read, Update, Delete) que gestiona la aplicación.
+
+INFORMACIÓN ACADÉMICA:
+----------------------
+Programa:     Análisis y Desarrollo de Software - SENA
+Evidencia:    GA7-220501096-AA3-EV01
+Tecnología:   Thymeleaf + Bootstrap 5
+Ubicación:    src/main/resources/templates/proyectos/detalles.html
+Autor:        Nelson Rodriguez
+
+FUNCIONALIDADES IMPLEMENTADAS:
+-----------------------------
+
+1. VISTA DE SOLO LECTURA (Representa la "R" de CRUD):
+   - Presenta la información sin permitir la edición, garantizando la integridad
+     de los datos en esta vista.
+   - Ideal para consultas rápidas o para generar reportes.
+
+2. OBTENCIÓN DE DATOS POR ID:
+   - La vista recibe la información de un proyecto específico.
+   - **El proyecto a mostrar se obtiene usando el ID (identificador único) del proyecto.**
+   - El ID es pasado a través de la URL.
+   - Esta lógica se encuentra en el controlador (`ProyectoController`), que
+     recupera el proyecto por ID y se lo pasa a la vista a través del `Model`.
+
+3. PRESENTACIÓN CLARA DE DATOS:
+   - La información se divide en dos columnas: "Datos del Proyecto" y "Datos del Cliente",
+     facilitando la lectura.
+   - Utiliza listas de definición (`<dl>`, `<dt>`, `<dd>`) para una estructura
+     semántica y clara.
+
+4. INFORMACIÓN VISUAL DEL ESTADO:
+   - Muestra el estado del proyecto (`ACTIVO`, `PAUSADO`, etc.) con un "badge"
+     de color distintivo, mejorando la comprensión visual inmediata.
+     - Verde para ACTIVO
+     - Amarillo para PAUSADO
+     - Azul para FINALIZADO
+     - Gris para CANCELADO
+
+5. NAVEGACIÓN INTUITIVA:
+   - Incluye un botón prominente "Volver a la Lista" para que el usuario pueda
+     regresar fácilmente al listado principal.
+   - La barra de navegación también ofrece un camino de regreso a la lista de proyectos.
+
+6. DISEÑO AUTOCONTENIDO (por practicidad):
+   -  Esta página no usa el layout, incluyendo su propia estructura HTML completa
+       (`<head>`, `<body>`, `<footer>`).
+
+BINDING CON EL CONTROLADOR:
+--------------------------
+
+1. DATOS RECIBIDOS:
+   - ${proyecto}: Objeto `Proyecto` completo, pasado desde el `ProyectoController`
+     a través del `Model`.
+   - `th:object="${proyecto}"` se usa en la tarjeta principal para poder acceder
+     a los campos con la sintaxis de selección `*{...}`.
+
+2. CONTROLADOR ASOCIADO:
+   - Esta vista es renderizada por el método `verDetalles` en `ProyectoController`,
+     que maneja la ruta `@GetMapping("/proyectos/ver/{id}")`.
+     - El controlador obtiene el ID del proyecto desde la URL.
+     - Usa ese ID para llamar al servicio y obtener los datos del proyecto.
+     - Pasa el objeto `proyecto` al modelo para que esté disponible en la vista.
+
+ELEMENTOS DE DISEÑO Y UX:
+-------------------------
+
+1. ENCABEZADO CLARO:
+   - Título grande y descriptivo ("Detalles del Proyecto").
+   - Subtítulo con el nombre específico del proyecto que se está viendo.
+   - Icono `bi-info-circle` para reforzar el propósito de la página.
+
+2. TARJETA DE INFORMACIÓN:
+   - Uso de `card` de Bootstrap con una sombra (`shadow-sm`) para dar profundidad.
+   - El `card-header` resalta el nombre del proyecto.
+   - El `card-footer` proporciona un mensaje contextual al usuario.
+
+3. RESPONSIVE DESIGN:
+   - El layout de dos columnas (`col-lg-6`) se adapta en dispositivos más pequeños,
+     apilando las columnas verticalmente para una mejor visualización en móviles.
+
+EVIDENCIA DE COMPETENCIAS:
+-------------------------
+1. 🎯 Creación de vistas de detalle (solo lectura) en una aplicación CRUD.
+2. 🏗️ Uso de expresiones de Thymeleaf (`th:text`, `th:object`, `th:classappend`) para
+   mostrar datos dinámicos.
+3. 💾 Aplicación de formato a tipos de datos específicos, como fechas (`#temporals.format`).
+4. 📝 Diseño de interfaces de usuario claras y bien estructuradas con Bootstrap.
+5. 🔧 Implementación de lógica condicional en la vista (para los colores de los badges de estado).
+
+================================================================================
+-->
