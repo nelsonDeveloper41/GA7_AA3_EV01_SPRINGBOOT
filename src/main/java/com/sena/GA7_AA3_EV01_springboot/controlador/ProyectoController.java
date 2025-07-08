@@ -115,7 +115,8 @@ public class ProyectoController {
         } catch (Exception e) {
             log.error("❌ Error al guardar proyecto: {}", e.getMessage());
 
-            model.addAttribute("error", e.getMessage());
+            bindingResult.rejectValue("nitCliente", "error.nitDuplicado",
+                    "Ya existe un proyecto activo con este NIT");
             model.addAttribute("titulo", proyecto.getId() == null ? "Crear Nuevo Proyecto" : "Editar Proyecto");
             model.addAttribute("esNuevo", proyecto.getId() == null);
 
